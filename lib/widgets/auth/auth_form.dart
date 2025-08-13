@@ -6,24 +6,29 @@ class AuthForm extends StatefulWidget {
 }
 
 class _AuthFormState extends State<AuthForm> {
-  
   final _formKey = GlobalKey<FormState>();
+
+  var _isLogIn = true;
+
   String? _userEmail = '';
   String? _userName = '';
   String? _userPassword = '';
 
-  void _trySubmit(){
+  void _trySubmit() {
     final form = _formKey.currentState;
-    if( form != null){
+    FocusScope.of(context).unfocus();
+    if (form != null) {
       final isValid = form.validate();
       if (!isValid) {
         return;
+      }
+      form.save();
+      print(_userEmail);
+      print(_userName);
+      print(_userPassword);
     }
-    form.save();
-    }
-    
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -38,8 +43,11 @@ class _AuthFormState extends State<AuthForm> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   TextFormField(
+                    key: ValueKey('email'),
                     validator: (value) {
-                      if(value == null || value.isEmpty || !value.contains('@')) {
+                      if (value == null ||
+                          value.isEmpty ||
+                          !value.contains('@')) {
                         return 'Veuillez entrer une adresse email valide';
                       }
                       return null;
@@ -50,21 +58,28 @@ class _AuthFormState extends State<AuthForm> {
                       _userEmail = newValue;
                     },
                   ),
+                  if (!_isLogIn)
+                    TextFormField(
+                      key: ValueKey('username'),
+                      validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            value.length < 4) {
+                          return "Le nom d'utilisateur doit faire au moins 4 caractères";
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        labelText: "Nom d'utilisateur",
+                      ),
+                      onSaved: (newValue) {
+                        _userName = newValue;
+                      },
+                    ),
                   TextFormField(
+                    key: ValueKey('password'),
                     validator: (value) {
-                      if(value == null || value.isEmpty || value.length<4) {
-                        return "Le nom d'utilisateur doit faire au moins 4 caractères";
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(labelText: "Nom d'utilisateur"),
-                    onSaved: (newValue) {
-                      _userName = newValue;
-                    },
-                  ),
-                  TextFormField(
-                    validator: (value) {
-                      if(value == null || value.isEmpty || value.length<7) {
+                      if (value == null || value.isEmpty || value.length < 7) {
                         return 'Votre mot de passe doit faire au moins 7 caractères';
                       }
                       return null;
@@ -74,14 +89,20 @@ class _AuthFormState extends State<AuthForm> {
                     onSaved: (newValue) {
                       _userPassword = newValue;
                     },
-                    
                   ),
                   SizedBox(height: 12),
-                  ElevatedButton(child: Text('Connexion'), onPressed: () {}),
-                  TextButton(
-                    child: Text('Nouvel utilisateur'),
+                  ElevatedButton(
+                    child: Text(_isLogIn ? 'Connexion' : "S'enrengistrer"),
                     onPressed: () {
-                    
+                      _trySubmit();
+                    },
+                  ),
+                  TextButton(
+                    child: Text(
+                      _isLogIn ? 'Nouvel utilisateur' : "J'ai déjà un compte",
+                    ),
+                    onPressed: () {
+                      setState(() => _isLogIn = !_isLogIn);
                     },
                   ),
                 ],
