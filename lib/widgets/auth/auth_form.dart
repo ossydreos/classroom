@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
-  AuthForm(this.submitFn);
+  AuthForm(this.submitFn, this.isLoading);
 
   final void Function(
     String email,
@@ -11,6 +11,7 @@ class AuthForm extends StatefulWidget {
     BuildContext ctx,
   )
   submitFn;
+  final bool isLoading;
 
   @override
   State<AuthForm> createState() => _AuthFormState();
@@ -33,7 +34,13 @@ class _AuthFormState extends State<AuthForm> {
         return;
       }
       form.save();
-      widget.submitFn(_userEmail.trim(), _userPassword.trim(), _userName.trim(), _isLogIn, context);
+      widget.submitFn(
+        _userEmail.trim(),
+        _userPassword.trim(),
+        _userName.trim(),
+        _isLogIn,
+        context,
+      );
     }
   }
 
@@ -99,20 +106,23 @@ class _AuthFormState extends State<AuthForm> {
                     },
                   ),
                   SizedBox(height: 12),
-                  ElevatedButton(
-                    child: Text(_isLogIn ? 'Connexion' : "S'enrengistrer"),
-                    onPressed: () {
-                      _trySubmit();
-                    },
-                  ),
-                  TextButton(
-                    child: Text(
-                      _isLogIn ? 'Nouvel utilisateur' : "J'ai déjà un compte",
+                  if (widget.isLoading) CircularProgressIndicator(),
+                  if (!widget.isLoading)
+                    ElevatedButton(
+                      child: Text(_isLogIn ? 'Connexion' : "S'enrengistrer"),
+                      onPressed: () {
+                        _trySubmit();
+                      },
                     ),
-                    onPressed: () {
-                      setState(() => _isLogIn = !_isLogIn);
-                    },
-                  ),
+                  if (!widget.isLoading)
+                    TextButton(
+                      child: Text(
+                        _isLogIn ? 'Nouvel utilisateur' : "J'ai déjà un compte",
+                      ),
+                      onPressed: () {
+                        setState(() => _isLogIn = !_isLogIn);
+                      },
+                    ),
                 ],
               ),
             ),
