@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
 
 class AuthForm extends StatefulWidget {
+  AuthForm(this.submitFn);
+
+  final void Function(
+    String email,
+    String password,
+    String username,
+    bool isLogIn,
+    BuildContext ctx,
+  )
+  submitFn;
+
   @override
   State<AuthForm> createState() => _AuthFormState();
 }
@@ -9,10 +20,9 @@ class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
 
   var _isLogIn = true;
-
-  String? _userEmail = '';
-  String? _userName = '';
-  String? _userPassword = '';
+  String _userEmail = '';
+  String _userName = '';
+  String _userPassword = '';
 
   void _trySubmit() {
     final form = _formKey.currentState;
@@ -23,9 +33,7 @@ class _AuthFormState extends State<AuthForm> {
         return;
       }
       form.save();
-      print(_userEmail);
-      print(_userName);
-      print(_userPassword);
+      widget.submitFn(_userEmail.trim(), _userPassword.trim(), _userName.trim(), _isLogIn, context);
     }
   }
 
@@ -55,7 +63,7 @@ class _AuthFormState extends State<AuthForm> {
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(labelText: 'Adresse email'),
                     onSaved: (newValue) {
-                      _userEmail = newValue;
+                      _userEmail = newValue!;
                     },
                   ),
                   if (!_isLogIn)
@@ -73,7 +81,7 @@ class _AuthFormState extends State<AuthForm> {
                         labelText: "Nom d'utilisateur",
                       ),
                       onSaved: (newValue) {
-                        _userName = newValue;
+                        _userName = newValue!;
                       },
                     ),
                   TextFormField(
@@ -87,7 +95,7 @@ class _AuthFormState extends State<AuthForm> {
                     decoration: InputDecoration(labelText: 'Mot de passe'),
                     obscureText: true,
                     onSaved: (newValue) {
-                      _userPassword = newValue;
+                      _userPassword = newValue!;
                     },
                   ),
                   SizedBox(height: 12),
