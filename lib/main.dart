@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 import './screens/chat_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import './screens/auth_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(); 
+  await FirebaseAuth.instance.signInAnonymously(); // Ajoute cette ligne
   runApp(const MyApp());
 }
 
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink , brightness: Brightness.light)
         
       ),
-      home: AuthScreen(),
+      home: ChatScreen(),
     );
   }
 }
