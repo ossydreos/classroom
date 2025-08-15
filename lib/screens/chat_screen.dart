@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/chat/messages.dart';
 
+import '../widgets/chat/new_message.dart';
+
 class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -36,15 +38,12 @@ class ChatScreen extends StatelessWidget {
         ],
       ),
       body: Container(
-        child: Column(children: <Widget>[Expanded(child: Messages())]),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          FirebaseFirestore.instance
-              .collection('chats/klSHI7dxjkq4Lakm5Rk8/messages')
-              .add({'text': 'Ajouté avec le bouton'});
-        },
+        child: Column(children: <Widget>[
+            Expanded(
+              child: Messages(),
+            ),
+            NewMessage(),
+          ]),
       ),
     );
   }
