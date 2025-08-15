@@ -20,10 +20,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'FlutterChat',
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink , brightness: Brightness.light)
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink , brightness: Brightness.light),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.pink,
+          foregroundColor: Colors.white,
+        ),
         
       ),
       home: StreamBuilder(stream: FirebaseAuth.instance.authStateChanges(),
