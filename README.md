@@ -15,8 +15,12 @@ Dans le cadre de mon travail d’été, j’ai développé cette petite applicat
 ## 🛠️ Technologies utilisées
 - **Flutter** (framework principal)  
 - **Dart** (langage de programmation)  
-- Intégration d’un backend avec Firebase pour : Base de donnée, authentification et stockage.
-
+- **Firebase** (backend complet) :  
+  - **Cloud Firestore** pour la base de données temps réel  
+  - **Firebase Authentication** pour la gestion des comptes utilisateurs  
+  - **Firebase Storage** pour l’hébergement et le stockage des fichiers (images, etc.)  
+  - **Firebase Cloud Messaging (FCM)** pour l’envoi et la réception de notifications push
+  - **Firebase Function** pour la détéction de nouveau messages pour envois notification 
 ---
 
 ## 📦 Installation et exécution
