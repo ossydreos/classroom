@@ -9,7 +9,7 @@ Dans le cadre de mon travail d’été, j’ai développé cette petite applicat
 - Interface fluide et responsive  
 - Design simple et intuitif  
 - Compatibilité Android et iOS  
-
+-
 ---
 
 ## 🛠️ Technologies utilisées
