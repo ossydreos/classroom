@@ -8,7 +8,7 @@ Dans le cadre de mon travail d’été, j’ai développé cette petite applicat
 - Envoi et réception de messages en temps réel  
 - Interface fluide et responsive  
 - Design simple et intuitif  
-- Compatibilité Android et iOS  
+- Compatibilité Android et avec quelques ajustements IOS
 -
 ---
 
