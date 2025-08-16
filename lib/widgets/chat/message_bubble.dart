@@ -8,9 +8,9 @@ class MessageBubble extends StatelessWidget {
 
   const MessageBubble(
     this.message,
+    this.userName,
     this.userId,
-    this.isMe,
-    this.userName, {
+    this.isMe, {
     Key? key,
   }) : super(key: key);
 

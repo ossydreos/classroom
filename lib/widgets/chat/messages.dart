@@ -36,8 +36,9 @@ class Messages extends StatelessWidget {
               reverse: true,
               itemCount: chatDocs.length,
               itemBuilder: (context, index) => MessageBubble(
-                chatDocs[index]['text'] as String,
-                chatDocs[index]['userId'] as String,
+                chatDocs[index]['text'],
+                chatDocs[index]['username'],
+                chatDocs[index]['userId'],
                 chatDocs[index]['userId'] == futureSnapshot.data?.uid,
                 key: ValueKey(chatDocs[index].id),
               ),
