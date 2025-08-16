@@ -1,16 +1,48 @@
-# projet_ete_youri
+# 📱 Projet Été – Application de Messagerie Flutter
 
-A new Flutter project.
+Dans le cadre de mon travail d’été, j’ai développé cette petite application de messagerie afin de mettre en pratique et démontrer mes compétences en **Flutter**. L’objectif est de permettre un échange simple et rapide de messages, tout en respectant les bonnes pratiques de développement mobile.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🚀 Fonctionnalités principales
+- Envoi et réception de messages en temps réel  
+- Interface fluide et responsive  
+- Design simple et intuitif  
+- Compatibilité Android et iOS  
+-
+---
 
-A few resources to get you started if this is your first Flutter project:
+## 🛠️ Technologies utilisées
+- **Flutter** (framework principal)  
+- **Dart** (langage de programmation)  
+- Intégration d’un backend avec Firebase pour : Base de donnée, authentification et stockage.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 📦 Installation et exécution
+1. **Cloner le projet**
+   ```bash
+   git clone https://github.com/ossydreos/classroom.git
+   ```
+2. **Accéder au dossier**
+   ```bash
+   cd classroom
+   ```
+3. **Installer les dépendances**
+   ```bash
+   flutter pub get
+   ```
+4. **Lancer l’application**
+   ```bash
+   flutter run
+   ```
+
+---
+
+## 📲 Tester l’application
+
+Vous pouvez tester directement l’application en téléchargeant le fichier APK disponible dans la section Releases du dépôt GitHub, puis en l’installant sur un appareil Android.
+
+---
+
+✍️ *Développé par Youri dans le cadre d’un projet d’été*
