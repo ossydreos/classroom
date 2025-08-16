@@ -31,7 +31,7 @@ class _AuthFormState extends State<AuthForm> {
   String _userEmail = '';
   String _userName = '';
   String _userPassword = '';
-  File? _userImageFile; // correction ici
+  File? _userImageFile;
 
   void _pickedImage(File image) {
     _userImageFile = image;

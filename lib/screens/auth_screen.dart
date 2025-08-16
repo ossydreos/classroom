@@ -45,7 +45,12 @@ class _AuthScreenState extends State<AuthScreen> {
           password: password,
         );
 
-        final ref = FirebaseStorage.instance
+      final storage = FirebaseStorage.instanceFor(
+        bucket: 'gs://flutter-chat-7868d.firebasestorage.app'
+      );
+
+
+        final ref = storage
             .ref()
             .child('user_images')
             .child(userCredential.user!.uid + '.jpg');
@@ -53,7 +58,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
         final url = await ref.getDownloadURL();
 
-        
+
         await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
         'username' : username,
         'email' : email,
