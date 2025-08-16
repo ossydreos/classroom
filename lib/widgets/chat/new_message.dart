@@ -14,7 +14,7 @@ class _NewMessageState extends State<NewMessage> {
   void _sendMessage() async {
     if (_enteredMessage.trim().isEmpty) return;
     FocusScope.of(context).unfocus();
-    final user = FirebaseAuth.instance.currentUser;
+    final user = await FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance.collection('chat').add({
       'text': _enteredMessage,
       'createdAt': Timestamp.now(),
