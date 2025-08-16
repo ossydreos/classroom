@@ -1,17 +1,24 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import '../pickers/user_image_picker.dart';
 
 class AuthForm extends StatefulWidget {
-  AuthForm(this.submitFn, this.isLoading);
+ AuthForm(
+    this.submitFn,
+    this.isLoading,
+  );
 
+  final bool isLoading;
   final void Function(
     String email,
     String password,
-    String username,
-    bool isLogIn,
+    String userName,
+    File image,
+    bool isLogin,
     BuildContext ctx,
-  )
-  submitFn;
-  final bool isLoading;
+  ) submitFn;
 
   @override
   State<AuthForm> createState() => _AuthFormState();
@@ -24,20 +31,33 @@ class _AuthFormState extends State<AuthForm> {
   String _userEmail = '';
   String _userName = '';
   String _userPassword = '';
+  File? _userImageFile; // correction ici
+
+  void _pickedImage(File image) {
+    _userImageFile = image;
+  }
 
   void _trySubmit() {
-    final form = _formKey.currentState;
+    final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
-    if (form != null) {
-      final isValid = form.validate();
-      if (!isValid) {
-        return;
-      }
-      form.save();
+
+    if (_userImageFile == null && !_isLogIn) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please pick an image.'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+      return;
+    }
+
+    if (isValid) {
+      _formKey.currentState!.save();
       widget.submitFn(
         _userEmail.trim(),
         _userPassword.trim(),
         _userName.trim(),
+        _userImageFile!,
         _isLogIn,
         context,
       );
@@ -57,6 +77,7 @@ class _AuthFormState extends State<AuthForm> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
+                  if (!_isLogIn) UserImagePicker(_pickedImage),
                   TextFormField(
                     key: ValueKey('email'),
                     validator: (value) {
