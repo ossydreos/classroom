@@ -5,7 +5,7 @@
 
     
     <application
-        android:label="projet_ete_youri"
+        android:label="YouriChat"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

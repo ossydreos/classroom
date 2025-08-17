@@ -23,9 +23,9 @@ class MyApp extends StatelessWidget {
       title: 'FlutterChat',
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink , brightness: Brightness.light),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlueAccent , brightness: Brightness.light),
         appBarTheme: AppBarTheme(
-          backgroundColor: Colors.pink,
+          backgroundColor: Colors.lightBlueAccent,
           foregroundColor: Colors.white,
         ),
         
