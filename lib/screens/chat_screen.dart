@@ -33,7 +33,6 @@ class ChatScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // Messages
           Expanded(
             child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
               stream: roomsRef
@@ -74,7 +73,6 @@ class ChatScreen extends StatelessWidget {
               },
             ),
           ),
-          // Zone de saisie
           NewMessage(roomId: roomId),
         ],
       ),

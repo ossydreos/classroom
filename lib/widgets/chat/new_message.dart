@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class NewMessage extends StatefulWidget {
-  final String roomId;   // ⚡️ identifiant de la room
+  final String roomId;
 
   const NewMessage({super.key, required this.roomId});
 
@@ -29,11 +29,11 @@ class _NewMessageState extends State<NewMessage> {
 
     await FirebaseFirestore.instance
         .collection('rooms')
-        .doc(widget.roomId)              // ⚡️ on cible la bonne room
+        .doc(widget.roomId)
         .collection('chat')
         .add({
       'text': _enteredMessage.trim(),
-      'createdAt': FieldValue.serverTimestamp(), // meilleur que Timestamp.now()
+      'createdAt': FieldValue.serverTimestamp(),
       'userId': user.uid,
       'username': userData['username'],
       'userImage': userData['image_url'],

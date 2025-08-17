@@ -25,7 +25,10 @@ class RoomListScreen extends StatelessWidget {
         actions: [LogOut()],
       ),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: FirebaseFirestore.instance.collection('rooms').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('rooms')
+            .orderBy('createdAt', descending: false)
+            .snapshots(),
         builder: (ctx, snapshot) {
           if (snapshot.hasError) {
             return const Center(child: Text('Erreur Firestore'));
@@ -67,9 +70,12 @@ class RoomListScreen extends StatelessWidget {
               builder: (context, snap) {
                 final isAdmin = snap.data == true;
                 if (!isAdmin) return const SizedBox.shrink();
-                return FloatingActionButton(
-                  onPressed: () => _showCreateRoomDialog(context),
-                  child: const Icon(Icons.add),
+                return Align(
+                  alignment: Alignment.bottomCenter,
+                  child: FloatingActionButton(
+                    onPressed: () => _showCreateRoomDialog(context),
+                    child: const Icon(Icons.add),
+                  ),
                 );
               },
             ),

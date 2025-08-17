@@ -16,6 +16,44 @@ class RoomCard extends StatelessWidget {
     required this.scaffoldContext,
   });
 
+void _confirmDeleteRoom(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (dialogCtx) => AlertDialog(
+        title: const Text('Supprimer la room ?'),
+        content: Text('“$roomName” et tous ses messages seront supprimés.'),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(dialogCtx).pop(), child: const Text('Annuler')),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            onPressed: () async {
+              Navigator.of(dialogCtx).pop();
+              await _deleteRoomCascade(roomId);
+              ScaffoldMessenger.of(scaffoldContext).showSnackBar(
+                SnackBar(content: Text('Room "$roomName" supprimée')),
+              );
+            },
+            child: const Text('Supprimer', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _deleteRoomCascade(String roomId) async {
+    final roomRef = FirebaseFirestore.instance.collection('rooms').doc(roomId);
+    while (true) {
+      final batch = FirebaseFirestore.instance.batch();
+      final snap = await roomRef.collection('chat').limit(300).get();
+      if (snap.docs.isEmpty) break;
+      for (final d in snap.docs) {
+        batch.delete(d.reference);
+      }
+      await batch.commit();
+    }
+    await roomRef.delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -54,41 +92,5 @@ class RoomCard extends StatelessWidget {
     );
   }
 
-  void _confirmDeleteRoom(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (dialogCtx) => AlertDialog(
-        title: const Text('Supprimer la room ?'),
-        content: Text('“$roomName” et tous ses messages seront supprimés.'),
-        actions: [
-          TextButton(onPressed: () => Navigator.of(dialogCtx).pop(), child: const Text('Annuler')),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            onPressed: () async {
-              Navigator.of(dialogCtx).pop();
-              await _deleteRoomCascade(roomId);
-              ScaffoldMessenger.of(scaffoldContext).showSnackBar(
-                SnackBar(content: Text('Room "$roomName" supprimée')),
-              );
-            },
-            child: const Text('Supprimer', style: TextStyle(color: Colors.white)),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Future<void> _deleteRoomCascade(String roomId) async {
-    final roomRef = FirebaseFirestore.instance.collection('rooms').doc(roomId);
-    while (true) {
-      final batch = FirebaseFirestore.instance.batch();
-      final snap = await roomRef.collection('chat').limit(300).get();
-      if (snap.docs.isEmpty) break;
-      for (final d in snap.docs) {
-        batch.delete(d.reference);
-      }
-      await batch.commit();
-    }
-    await roomRef.delete();
-  }
+  
 }
