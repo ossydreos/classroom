@@ -45,7 +45,7 @@ Dans le cadre de mon travail d’été, j’ai développé cette petite applicat
    flutter run
    ```
 
-## Installation aussi possible depuis -> Releases -> .apk
+## 📦 Installation aussi possible depuis -> Releases -> .apk
 
 
 
