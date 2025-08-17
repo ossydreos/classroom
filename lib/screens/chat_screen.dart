@@ -1,71 +1,81 @@
+// lib/screens/chat_screen.dart
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
-import '../widgets/chat/messages.dart';
+import '../widgets/auth/log_out.dart';
+import '../widgets/chat/message_bubble.dart';
 import '../widgets/chat/new_message.dart';
 
-class ChatScreen extends StatefulWidget {  
-  
-  final String roomName;
+class ChatScreen extends StatelessWidget {
+  final String roomId;
 
-  ChatScreen({required this.roomName});
-
-  @override
-  State<ChatScreen> createState() => _ChatScreenState();
-}
-
-class _ChatScreenState extends State<ChatScreen> {
-  @override
-  void initState() {
-    super.initState();
-    final fbm = FirebaseMessaging.instance;
-    fbm.requestPermission();
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print(message.data);
-    });
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print(message.data);
-    });
-    fbm.subscribeToTopic('chat');
-  }
+  const ChatScreen({required this.roomId});
 
   @override
   Widget build(BuildContext context) {
+    final roomsRef = FirebaseFirestore.instance.collection('rooms');
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('FlutterChat'),
+        title: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+          stream: roomsRef.doc(roomId).snapshots(),
+          builder: (ctx, snapshot) {
+            if (!snapshot.hasData) return const Text('...');
+            final data = snapshot.data!.data();
+            final roomName = data?['name'] ?? 'Room';
+            return Text(roomName);
+          },
+        ),
         actions: [
-          DropdownButton(
-            underline: Container(),
-            icon: Icon(
-              Icons.more_vert,
-              color: Theme.of(context).primaryIconTheme.color,
-            ),
-            items: [
-              DropdownMenuItem(
-                value: 'logout',
-                child: Row(
-                  children: const [
-                    Icon(Icons.exit_to_app),
-                    SizedBox(width: 8),
-                    Text('Logout'),
-                  ],
-                ),
-              ),
-            ],
-            onChanged: (itemIdentifier) {
-              if (itemIdentifier == 'logout') {
-                FirebaseAuth.instance.signOut();
-              }
-            },
-          ),
+          LogOut(),
         ],
       ),
       body: Column(
-        children: <Widget> [
-          Expanded(child: Messages()),
-          NewMessage(),
+        children: [
+          // Messages
+          Expanded(
+            child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              stream: roomsRef
+                  .doc(roomId)
+                  .collection('chat')
+                  .orderBy('createdAt', descending: true)
+                  .snapshots(),
+              builder: (ctx, snapshot) {
+                if (snapshot.hasError) {
+                  return const Center(child: Text('Erreur Firestore'));
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return const Center(child: Text('Aucun message'));
+                }
+
+                final messages = snapshot.data!.docs;
+
+                return ListView.builder(
+                  reverse: true,
+                  itemCount: messages.length,
+                  itemBuilder: (ctx, i) {
+                    final msg = messages[i].data();
+                    final isMe = msg['userId'] ==
+                        FirebaseAuth.instance.currentUser?.uid;
+
+                    return MessageBubble(
+                      msg['text'] ?? '',
+                      msg['username'] ?? 'Anonyme',
+                      msg['userImage'] ?? '',
+                      isMe,
+                      key: ValueKey(messages[i].id),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+          // Zone de saisie
+          NewMessage(roomId: roomId),
         ],
       ),
     );
