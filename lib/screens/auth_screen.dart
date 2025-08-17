@@ -22,14 +22,13 @@ class _AuthScreenState extends State<AuthScreen> {
     String email,
     String password,
     String username,
-    File image,
+    File? image,
     bool isLogIn,
     BuildContext ctx,
   ) async {
     UserCredential userCredential;
 
     try {
-
       setState(() {
         _isLoading = true;
       });
@@ -45,30 +44,24 @@ class _AuthScreenState extends State<AuthScreen> {
           password: password,
         );
 
-      final storage = FirebaseStorage.instanceFor(
-        bucket: 'gs://flutter-chat-7868d.firebasestorage.app'
-      );
-
+        final storage = FirebaseStorage.instanceFor(
+          bucket: 'gs://flutter-chat-7868d.firebasestorage.app',
+        );
 
         final ref = storage
             .ref()
             .child('user_images')
             .child(userCredential.user!.uid + '.jpg');
-        await ref.putFile(image);
+        await ref.putFile(image!);
 
         final url = await ref.getDownloadURL();
 
-
-        await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
-        'username' : username,
-        'email' : email,
-        'image_url': url,
-      });
-      print('Image URL: $url');
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .set({'username': username, 'email': email, 'image_url': url});
+        print('Image URL: $url');
       }
-
-      
-
     } on PlatformException catch (err) {
       var message = 'Erreur veuillez vérifier les logs';
       if (err.message != null) {

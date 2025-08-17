@@ -29,6 +29,7 @@ class _NewMessageState extends State<NewMessage> {
     _controller.clear();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Container(

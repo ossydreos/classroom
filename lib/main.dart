@@ -9,7 +9,6 @@ import './screens/auth_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(); 
-  await FirebaseAuth.instance.signInAnonymously(); // Ajoute cette ligne
   runApp(const MyApp());
 }
 
