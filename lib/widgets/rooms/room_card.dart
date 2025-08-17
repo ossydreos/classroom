@@ -38,7 +38,7 @@ class RoomCard extends StatelessWidget {
             final isAdmin = snap.data == true;
             if (isAdmin) {
               return IconButton(
-                icon: const Icon(Icons.delete, color: Colors.redAccent),
+                icon: const Icon(Icons.delete, color: Colors.blueGrey),
                 onPressed: () => _confirmDeleteRoom(context),
               );
             }
@@ -65,14 +65,13 @@ class RoomCard extends StatelessWidget {
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             onPressed: () async {
-              Navigator.of(dialogCtx).pop(); // ⬅️ ferme UNIQUEMENT le dialog
+              Navigator.of(dialogCtx).pop();
               await _deleteRoomCascade(roomId);
-              // ⬅️ utilise le contexte du Scaffold, pas celui du card (qui peut être détruit)
               ScaffoldMessenger.of(scaffoldContext).showSnackBar(
                 SnackBar(content: Text('Room "$roomName" supprimée')),
               );
             },
-            child: const Text('Supprimer'),
+            child: const Text('Supprimer', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
