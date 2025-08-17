@@ -78,8 +78,8 @@ erDiagram
     string roomId FK
   }
 
-  USERS  ||--o{ MESSAGES : writes
-  ROOMS  ||--o{ MESSAGES : contains
+  USERS  ||--o{ MESSAGES : écrivent dans
+  ROOMS  ||--o{ MESSAGES : contiens
 ```
 
 ---
