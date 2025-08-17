@@ -78,7 +78,7 @@ erDiagram
     string roomId FK
   }
 
-  USERS  ||--o{ MESSAGES : écrivent dans
+  USERS  ||--o{ MESSAGES : écrivent
   ROOMS  ||--o{ MESSAGES : contiens
 ```
 
