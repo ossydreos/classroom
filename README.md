@@ -72,10 +72,10 @@ erDiagram
     string messageId PK
     string text
     datetime createdAt
-    string userId FK
     string username
     string userImage
     string roomId FK
+    string userId FK
   }
 
   USERS  ||--o{ MESSAGES : écrivent
