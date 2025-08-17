@@ -5,7 +5,12 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import '../widgets/chat/messages.dart';
 import '../widgets/chat/new_message.dart';
 
-class ChatScreen extends StatefulWidget {
+class ChatScreen extends StatefulWidget {  
+  
+  final String roomName;
+
+  ChatScreen({required this.roomName});
+
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
