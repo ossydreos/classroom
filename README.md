@@ -53,7 +53,6 @@ Dans le cadre de mon travail d’été, j’ai développé cette petite applicat
 
 
 ```mermaid
-%% Relations & entités (vue "tables")
 erDiagram
   USERS {
     string uid PK
@@ -66,21 +65,21 @@ erDiagram
   ROOMS {
     string roomId PK
     string name
-    timestamp createdAt
+    datetime createdAt
   }
 
   MESSAGES {
     string messageId PK
     string text
-    timestamp createdAt
-    string userId FK   %% -> users/uid
-    string username    %% snapshot au moment de l’envoi
-    string userImage   %% snapshot au moment de l’envoi
-    string roomId FK   %% -> rooms/roomId (contenant)
+    datetime createdAt
+    string userId FK
+    string username
+    string userImage
+    string roomId FK
   }
 
-  USERS  ||--o{ MESSAGES : "writes"
-  ROOMS  ||--o{ MESSAGES : "contains"
+  USERS  ||--o{ MESSAGES : writes
+  ROOMS  ||--o{ MESSAGES : contains
 ```
 
 ---
