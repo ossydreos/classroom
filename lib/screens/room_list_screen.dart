@@ -1,7 +1,7 @@
 // lib/screens/room_list_screen.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import './chat_screen.dart';
+import '../widgets/rooms/room_card.dart';
 
 import '../widgets/auth/log_out.dart';
 
@@ -41,39 +41,7 @@ class RoomListScreen extends StatelessWidget {
               final data = doc.data();
               final roomName = data['name'] ?? '(sans nom)';
 
-              return Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                elevation: 3,
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                child: ListTile(
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  leading: CircleAvatar(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    child: Text(
-                      roomName.isNotEmpty ? roomName[0].toUpperCase() : '?',
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  title: Text(
-                    roomName,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
-                  ),
-                  trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => ChatScreen(roomId: roomId),
-                      ),
-                    );
-                  },
-                ),
-              );
+              return RoomCard(roomName: roomName, roomId: roomId);
             },
           );
         },
